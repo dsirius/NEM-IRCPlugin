@@ -1,5 +1,7 @@
-from cloudbot.util import hook, http, web
-import json, redis, time, tweepy, re, urllib2, socket
+from cloudbot.util import http, web
+from cloudbot import hook
+import json, redis, time, tweepy, re, requests, socket
+import asyncio
 
 base_url = "http://bot.notenoughmods.com/"
 r = redis.StrictRedis(host='localhost', port=6379, db=1)
@@ -214,7 +216,7 @@ def brokenlinks(mods=None, list=None, message=None, nick=None):
                     counts[e.code] = 1
                 badmod = {'name': str(name), 'reason': e.code}
                 badmods.append(badmod)
-            except urllib2.HTTPError as e:
+            except urllib2.URLError as e:
                 if e.reason in counts:
                     counts[e.reason] += 1     
                 else:
