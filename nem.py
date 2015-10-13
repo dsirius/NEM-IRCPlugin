@@ -1,4 +1,4 @@
-from util import hook, http, web
+from cloudbot.util import hook, http, web
 import json, redis, time, tweepy, re, urllib2, socket
 
 base_url = "http://bot.notenoughmods.com/"
@@ -72,7 +72,7 @@ def printmultimod(modlist=None, mcv=None, modname=None, multi=False, reply=None,
                 found = True
                 results.append(result)
         
-	if found:
+    if found:
             if len(results) < 20:
                 if len(results) > 5:
                     message(str(len(results)) + " mod(s) found. Replying privately..")
@@ -86,7 +86,7 @@ def printmultimod(modlist=None, mcv=None, modname=None, multi=False, reply=None,
                         message(line)
             else:
                 reply("Too many mods matched (" + str(len(results)) + ") Please refine your search")
-        else:
+    else:
             reply("Mod not found")
 
 def printmod(modlist=None, mcv=None, modname=None, multi=False, reply=None):
@@ -207,21 +207,21 @@ def brokenlinks(mods=None, list=None, message=None, nick=None):
             opener.addheaders = [('User-agent', 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/36.0.1985.143 Safari/537.36'),('Accept', 'text/html')]
             try:
                 resp = opener.open(info['longurl'])
-            except urllib2.HTTPError, e:
+            except urllib2.HTTPError as e:
                 if e.code in counts:
                     counts[e.code] += 1
                 else:
                     counts[e.code] = 1
                 badmod = {'name': str(name), 'reason': e.code}
                 badmods.append(badmod)
-            except urllib2.URLError, e:
+            except urllib2.HTTPError as e:
                 if e.reason in counts:
                     counts[e.reason] += 1     
                 else:
                     counts[e.reason] = 1
                 badmod = {'name': str(name), 'reason': e.reason}
                 badmods.append(badmod)
-            except socket.timeout, e:
+            except socket.timeout as e:
                 if 'timeout' in counts:
                     counts['timeout'] += 1
                 else:
@@ -341,7 +341,7 @@ def nemclearblink(inp, message=None):
     if result:
         message("Completed")
     else: 
-	message("Errored")
+        message("Errored")
 
 @hook.command('nemdebugchan', permissions=["adminonly"])
 def nemdebug(inp, input=None, message=None, nick=None):
